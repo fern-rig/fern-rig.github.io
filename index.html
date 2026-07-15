@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FERN — Fourier Evidential Regression Network for Robotic Information Gathering</title>
+  <meta name="description" content="FERN: a Fourier Evidential Regression Network that disentangles aleatoric and epistemic uncertainty for high-fidelity robotic information gathering, validated on elevation mapping benchmarks and a real-world AAV marshland monitoring mission.">
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <style>
+    :root{--bg:#fafaf8;--bg-alt:#f2f5f2;--bg-card:#fff;--text:#1a1a1a;--text-sec:#555;--text-mut:#888;--border:#e0ddd8;--border-lt:#eceae6;--accent:#1f7a4d;--accent-light:#eaf6ee;--accent-border:#bfe3cd;--serif:'Newsreader',Georgia,serif;--sans:'IBM Plex Sans',system-ui,sans-serif;--mono:'IBM Plex Mono',monospace}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+    nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:.85rem 2rem;background:rgba(250,250,248,.88);backdrop-filter:blur(16px);border-bottom:1px solid var(--border-lt)}.nav-inner{max-width:1000px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}.logo{font-family:var(--serif);font-size:1.15rem;font-weight:600}.logo span{color:var(--accent)}.nav-links{display:flex;gap:1.8rem}.nav-links a{color:var(--text-mut);text-decoration:none;font-size:.8rem;font-weight:500;letter-spacing:.02em;transition:color .2s}.nav-links a:hover{color:var(--accent)}
+    .hero{max-width:820px;margin:0 auto;padding:9rem 2rem 4rem;text-align:center}.badge{display:inline-block;padding:.3rem .9rem;border:1px solid var(--accent-border);border-radius:100px;font-size:.72rem;font-weight:600;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2rem;background:var(--accent-light);animation:fadeIn .6s ease both}.hero h1{font-family:var(--serif);font-size:clamp(1.7rem,3.6vw,2.6rem);line-height:1.28;font-weight:500;margin-bottom:1.5rem;letter-spacing:-.02em;animation:fadeIn .6s ease .1s both}.hero h1 .fern{color:var(--accent)}.hero-sub{font-size:1.02rem;color:var(--text-sec);max-width:660px;margin:0 auto 2rem;line-height:1.75;animation:fadeIn .6s ease .2s both}.authors{display:flex;justify-content:center;gap:1.2rem;flex-wrap:wrap;margin-bottom:.5rem;animation:fadeIn .6s ease .25s both}.author{font-size:.95rem;font-weight:500}.author sup{color:var(--accent);font-size:.65em}.affiliation{font-size:.85rem;color:var(--text-mut);margin-bottom:2.2rem;animation:fadeIn .6s ease .3s both}.affiliation sup{color:var(--accent)}.buttons{display:flex;justify-content:center;gap:.6rem;flex-wrap:wrap;animation:fadeIn .6s ease .35s both}.btn{display:inline-flex;align-items:center;gap:.45rem;padding:.55rem 1.2rem;border-radius:6px;font-size:.85rem;font-weight:500;text-decoration:none;transition:all .2s;font-family:var(--sans);cursor:pointer;border:1px solid var(--border);background:var(--bg-card);color:var(--text)}.btn:hover{border-color:var(--accent-border);color:var(--accent)}.btn-primary{background:var(--accent);color:#fff;border-color:var(--accent)}.btn-primary:hover{background:#175f3c}.btn-soon{opacity:.55;cursor:default}.btn-soon:hover{border-color:var(--border);color:var(--text)}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+    section{padding:4rem 2rem}.inner{max-width:800px;margin:0 auto}.inner-w{max-width:1060px;margin:0 auto}.sec-label{font-size:.7rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.6rem}.sec-title{font-family:var(--serif);font-size:clamp(1.5rem,2.5vw,2rem);font-weight:500;margin-bottom:1.2rem;letter-spacing:-.015em;line-height:1.25}.divider{height:1px;background:var(--border-lt);max-width:200px;margin:0 auto}
+    .abstract-text{font-family:var(--serif);font-size:1.05rem;color:var(--text-sec);line-height:1.85}.abstract-text p{margin-bottom:1rem}.abstract-text strong{color:var(--text);font-weight:500}
+    .contrib-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-top:1.5rem}.contrib-item{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:1.5rem;transition:all .2s}.contrib-item:hover{border-color:var(--accent-border);box-shadow:0 4px 16px rgba(31,122,77,.06)}.contrib-item h3{font-size:.9rem;font-weight:600;margin-bottom:.4rem}.contrib-item p{font-size:.85rem;color:var(--text-sec);line-height:1.65}.contrib-num{font-family:var(--serif);font-size:1.5rem;color:var(--accent);opacity:.35;font-weight:400;line-height:1;margin-bottom:.6rem}
+    .method-text p{font-size:.95rem;color:var(--text-sec);line-height:1.8;margin-bottom:1rem}.method-text h4{font-size:.85rem;font-weight:600;margin:1.3rem 0 .3rem;color:var(--text)}
+    .arch-box{margin:2rem 0;padding:2rem;background:var(--bg-card);border:1px solid var(--border);border-radius:12px}.arch-flow{display:flex;align-items:center;justify-content:center;gap:.6rem;flex-wrap:wrap}.arch-node{border:1px solid var(--border);border-radius:8px;padding:.75rem 1.1rem;text-align:center;background:var(--bg);min-width:105px;transition:all .2s}.arch-node:hover{border-color:var(--accent-border)}.arch-node .n-title{font-size:.76rem;font-weight:600}.arch-node .n-sub{font-size:.66rem;color:var(--text-mut)}.arch-node.core{border-color:var(--accent-border);background:var(--accent-light)}.arch-arr{color:var(--text-mut);font-size:.85rem}
+    .eq-box{background:var(--bg-alt);border:1px solid var(--border-lt);border-radius:8px;padding:1rem 1.5rem;margin:1rem 0;font-family:var(--mono);font-size:.85rem;text-align:center;position:relative}.eq-box .eq-num{position:absolute;right:1rem;top:50%;transform:translateY(-50%);color:var(--text-mut);font-size:.75rem}.eq-note{font-size:.78rem;color:var(--text-mut);text-align:center;margin-top:-.5rem;margin-bottom:1rem}
+    .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin:2rem 0}.stat{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:1.4rem 1rem;text-align:center;transition:all .2s}.stat:hover{border-color:var(--accent-border)}.stat-val{font-family:var(--serif);font-size:1.8rem;font-weight:500;line-height:1.1;margin-bottom:.2rem;color:var(--accent)}.stat-label{font-size:.72rem;color:var(--text-mut);line-height:1.4}
+    /* Figures */
+    .fig-wrap{margin:2rem 0;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--bg-card)}.fig-wrap img{width:100%;display:block}.fig-caption{padding:1rem 1.5rem;font-size:.85rem;color:var(--text-sec);border-top:1px solid var(--border-lt);line-height:1.6}.fig-caption strong{color:var(--text)}
+    /* Tabs */
+    .tabs{display:flex;gap:0;margin-bottom:-1px;position:relative;z-index:1;flex-wrap:wrap}.tab-btn{padding:.5rem 1.3rem;border:1px solid var(--border);border-radius:8px 8px 0 0;background:var(--bg-alt);color:var(--text-mut);font-size:.82rem;font-weight:600;cursor:pointer;font-family:var(--sans);transition:all .2s}.tab-btn.active{background:var(--bg-card);color:var(--accent);border-bottom-color:var(--bg-card)}.tab-content{display:none}.tab-content.active{display:block}
+    .data-table-wrap{overflow-x:auto;border-radius:0 12px 12px 12px;border:1px solid var(--border);background:var(--bg-card)}table.data-table{border-collapse:collapse;width:100%;font-size:.78rem;white-space:nowrap}table.data-table th,table.data-table td{padding:.55rem .8rem;text-align:center;border-bottom:1px solid var(--border-lt)}table.data-table thead th{background:var(--bg-alt);font-weight:600;color:var(--text-sec);position:sticky;top:0}table.data-table td:first-child,table.data-table th:first-child{text-align:left;font-weight:600;position:sticky;left:0;background:var(--bg-card)}table.data-table tbody tr:hover{background:var(--accent-light)}table.data-table td.best{color:var(--accent);font-weight:700}table.data-table caption{caption-side:bottom;padding:.9rem 1.2rem;font-size:.8rem;color:var(--text-sec);text-align:left;line-height:1.6}
+    /* Videos */
+    .vid-section{background:var(--bg-alt)}.vid-stack{display:flex;flex-direction:column;gap:2rem;margin-top:2rem}.vid-card{border:1px solid var(--border);border-radius:14px;overflow:hidden;background:var(--bg-card);transition:box-shadow .3s}.vid-card:hover{box-shadow:0 8px 30px rgba(0,0,0,.07)}.vid-player{width:100%;aspect-ratio:16/9;background:#000;display:block}.vid-player video{width:100%;height:100%;display:block;object-fit:contain}.vid-info{padding:1.2rem 1.5rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}.vid-info h3{font-size:1rem;font-weight:600}.vid-info p{font-size:.85rem;color:var(--text-mut)}.vid-tag{display:inline-block;padding:.2rem .6rem;border-radius:5px;font-size:.7rem;font-weight:600;letter-spacing:.04em;white-space:nowrap}.vid-tag-sim{background:var(--accent-light);color:var(--accent)}.vid-tag-real{background:#fef3c7;color:#92400e}.vid-tag-soon{background:#f1f0ee;color:#8a8578}
+    .vid-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.25rem;margin-top:2rem}.vid-mini{border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--bg-card);transition:box-shadow .3s}.vid-mini:hover{box-shadow:0 8px 24px rgba(0,0,0,.06)}.vid-mini .vid-player{aspect-ratio:16/10}.vid-mini .vid-info{padding:.85rem 1.1rem}.vid-mini .vid-info h3{font-size:.85rem}.vid-mini .vid-info p{font-size:.72rem}
+    .vid-placeholder{width:100%;aspect-ratio:16/9;background:repeating-linear-gradient(135deg,var(--bg-alt),var(--bg-alt) 10px,#eae8e3 10px,#eae8e3 20px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.6rem;color:var(--text-mut);border-bottom:1px solid var(--border-lt)}.vid-placeholder i{font-size:1.6rem;opacity:.6}.vid-placeholder span{font-size:.8rem;font-weight:500}
+    /* Experiments */
+    .exp-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2rem}.exp-card{border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--bg-card);transition:all .2s}.exp-card:hover{border-color:var(--accent-border);box-shadow:0 4px 16px rgba(31,122,77,.06)}.exp-card img{width:100%;display:block}.exp-info{padding:1rem 1.2rem}.exp-tag{display:inline-block;padding:.15rem .5rem;border-radius:4px;font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem;background:var(--accent-light);color:var(--accent)}.exp-info h3{font-size:.88rem;font-weight:600;margin-bottom:.3rem}.exp-info p{font-size:.82rem;color:var(--text-sec);line-height:1.6}
+    .env-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.9rem;margin-top:1.5rem}.env-card{border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--bg-card);text-align:center}.env-card img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block}.env-card .env-label{padding:.5rem .4rem;font-size:.72rem}.env-card .env-label b{display:block;font-size:.78rem}.env-card .env-label span{color:var(--text-mut);font-family:var(--mono);font-size:.68rem}
+    /* Bibtex */
+    .bib-block{border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--bg-card)}.bib-head{padding:.7rem 1.2rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border-lt)}.bib-head span{font-family:var(--mono);font-size:.75rem;color:var(--text-mut)}.copy-btn{padding:.3rem .7rem;border:1px solid var(--border);background:var(--bg);color:var(--text-sec);border-radius:5px;font-size:.72rem;cursor:pointer;font-family:var(--sans);font-weight:500;display:flex;align-items:center;gap:.3rem;transition:all .2s}.copy-btn:hover{border-color:var(--accent);color:var(--accent)}.bib-code{padding:1.2rem;font-family:var(--mono);font-size:.78rem;line-height:1.75;color:var(--text-sec);white-space:pre;overflow-x:auto}
+    footer{padding:3rem 2rem;text-align:center;border-top:1px solid var(--border-lt)}footer p{font-size:.8rem;color:var(--text-mut);line-height:1.7}footer a{color:var(--accent);text-decoration:none}footer a:hover{text-decoration:underline}
+    .fade-in{opacity:0;transform:translateY(20px);transition:opacity .5s ease,transform .5s ease}.fade-in.visible{opacity:1;transform:translateY(0)}
+    @media(max-width:768px){.nav-links{gap:1rem}.nav-links a{font-size:.7rem}.contrib-grid,.exp-grid,.vid-grid{grid-template-columns:1fr}.stats-row{grid-template-columns:repeat(2,1fr)}.arch-flow{flex-direction:column}.arch-arr{transform:rotate(90deg)}.env-grid{grid-template-columns:repeat(2,1fr)}}
+  </style>
+</head>
+<body>
+<nav><div class="nav-inner"><div class="logo">FE<span>RN</span></div><div class="nav-links"><a href="#abstract">Abstract</a><a href="#method">Method</a><a href="#results">Results</a><a href="#videos">Videos</a><a href="#experiments">Experiments</a><a href="#bibtex">Cite</a></div></div></nav>
+
+<div class="hero">
+  <div class="badge">Preprint &middot; 2026</div>
+  <h1><span class="fern">FERN</span>: Fourier Evidential Regression Network for Robotic Information Gathering</h1>
+  <p class="hero-sub">A calibrated uncertainty model that disentangles aleatoric and epistemic uncertainty to guide informative-path planning for robotic information gathering, validated on elevation-mapping benchmarks and a real-world AAV coastal marshland monitoring mission.</p>
+  <div class="authors">
+    <span class="author">Sourav Raxit<sup>1</sup></span>
+    <span class="author">Abdullah Al Redwan Newaz<sup>1</sup></span>
+    <span class="author">Paulo Padrao<sup>2</sup></span>
+    <span class="author">Jose Fuentes<sup>2</sup></span>
+    <span class="author">Leonardo Bobadilla<sup>2</sup></span>
+  </div>
+  <p class="affiliation"><sup>1</sup>University of New Orleans &nbsp;&middot;&nbsp; <sup>2</sup>Florida International University</p>
+  <div class="buttons">
+    <a href="#" class="btn btn-primary btn-soon" onclick="return false" title="Coming soon"><i class="fas fa-file-pdf"></i> Paper</a>
+    <a href="#" class="btn btn-soon" onclick="return false" title="Coming soon"><i class="ai ai-arxiv"></i> arXiv</a>
+    <a href="#videos" class="btn"><i class="fas fa-play"></i> Video</a>
+    <a href="#" class="btn btn-soon" onclick="return false" title="Coming soon"><i class="fab fa-github"></i> Code</a>
+  </div>
+</div><div class="divider"></div>
+
+<!-- ABSTRACT -->
+<section id="abstract"><div class="inner fade-in">
+  <div class="sec-label">Overview</div><h2 class="sec-title">Abstract</h2>
+  <div class="abstract-text">
+    <p>Robotic Information Gathering (RIG) relies on the uncertainty quantification of an inference model to identify critical regions of a spatial field for efficient data collection. Gaussian Processes with stationary and nonstationary kernels have been widely adopted for this task, but existing RIG algorithms often struggle to capture prediction uncertainty accurately in real-world spatial data, where variability differs across locations &mdash; leading to poor map construction.</p>
+    <p>We propose the <strong>Fourier Evidential Regression Network (FERN)</strong>, which provides calibrated uncertainty estimates and disentangles <strong>aleatoric uncertainty</strong> (observation noise) from <strong>epistemic uncertainty</strong> (lack of data). Learning uncertainty in this form enables RIG systems to generate high-fidelity maps.</p>
+    <p>Building on this, we propose an <strong>importance-sampling-based information-theoretic planning</strong> algorithm that exploits FERN's uncertainty decomposition to collect more informative data around high-error regions, ordering the resulting waypoints with a TSP solver and executing them along kinodynamically feasible trajectories.</p>
+    <p>We evaluate FERN on elevation-mapping tasks across eight geospatial environments, where it delivers better accuracy and uncertainty calibration than commonly used GP-based probabilistic models. Field experiments further demonstrate that FERN guides an Autonomous Aerial Vehicle (AAV) in collecting aerial imagery over a coastal marshland site, reducing elevation RMSE by 35% across three episodes.</p>
+  </div>
+</div></section><div class="divider"></div>
+
+<!-- CONTRIBUTIONS -->
+<section id="contributions"><div class="inner fade-in">
+  <div class="sec-label">Highlights</div><h2 class="sec-title">Key Contributions</h2>
+  <div class="contrib-grid">
+    <div class="contrib-item"><div class="contrib-num">01</div><h3>Calibrated Uncertainty Decomposition</h3><p>FERN learns aleatoric and epistemic uncertainty jointly through second-order risk minimization over a Fourier residual network, producing closed-form total predictive variance at every query point.</p></div>
+    <div class="contrib-item"><div class="contrib-num">02</div><h3>Total-Variance Information Gain</h3><p>An information-gain objective over total predictive variance captures both where the model lacks data and where the environment itself demands denser sampling.</p></div>
+    <div class="contrib-item"><div class="contrib-num">03</div><h3>Importance-Sampled TSP Planning</h3><p>Systematic resampling over the uncertainty map selects high-value waypoints, which an LKH-3 TSP solver and Bézier trajectory generator turn into a kinodynamically feasible route.</p></div>
+    <div class="contrib-item"><div class="contrib-num">04</div><h3>Real-World AAV Validation</h3><p>FERN outperforms state-of-the-art baselines across eight digital elevation environments and guides a real AAV marshland-monitoring mission, cutting RMSE 35% over three flight episodes.</p></div>
+  </div>
+</div></section><div class="divider"></div>
+
+<!-- METHOD -->
+<section id="method"><div class="inner fade-in">
+  <div class="sec-label">Approach</div><h2 class="sec-title">Uncertainty Quantification with Deep Evidential Regression</h2>
+  <div class="method-text">
+    <p>FERN builds on Deep Evidential Regression (DER), which performs <em>second-order</em> risk minimization: instead of directly predicting a likelihood over the target $y$, the network predicts the parameters of a distribution <em>over the likelihood itself</em>. For regression, this is the conjugate Normal-Inverse-Gamma (NIG) family, parameterized by $(\gamma, \nu, \alpha, \beta)$. A neural network $\mathcal{F}_{\Phi}$ maps each spatial coordinate directly to these four evidential parameters.</p>
+    <p>This hierarchical model yields closed-form expressions for the predictive mean and for the two uncertainty components &mdash; no sampling or ensembling required at inference time.</p>
+  </div>
+
+  <div class="eq-box">σ²<sub>total</sub>(x) = <u>β(ν+1) / [ν(α&minus;1)]</u> = β / [ν(α&minus;1)] <span style="color:var(--text-mut)">(epistemic)</span> + β/(α&minus;1) <span style="color:var(--text-mut)">(aleatoric)</span></div>
+  <div class="eq-note">Predictive mean μ<sub>e</sub>(x) = γ(x). Total variance combines model uncertainty (small ν) with irreducible sensor noise.</div>
+
+  <div class="fig-wrap fade-in">
+    <img src="./static/images/fern_net.png" alt="FERN network architecture diagram">
+    <div class="fig-caption"><strong>FERN architecture.</strong> Input coordinates are encoded by a frozen Random Fourier Feature (RFF) layer, refined by 3 residual blocks (LayerNorm &rarr; GELU &rarr; Dropout with skip connections), and projected to Normal-Inverse-Gamma parameters $(\gamma,\nu,\alpha,\beta)$ for closed-form uncertainty estimation in a single $O(1)$ forward pass.</div>
+  </div>
+
+  <div class="arch-box fade-in">
+    <div style="text-align:center;margin-bottom:1rem"><span class="sec-label" style="display:flex;justify-content:center">Network Pipeline</span></div>
+    <div class="arch-flow">
+      <div class="arch-node"><div class="n-title">Spatial Input</div><div class="n-sub">x &isin; &Ropf;&sup2;</div></div><div class="arch-arr">&rarr;</div>
+      <div class="arch-node"><div class="n-title">InputNorm</div><div class="n-sub">[&minus;1, 1]&sup2;</div></div><div class="arch-arr">&rarr;</div>
+      <div class="arch-node core"><div class="n-title">Random Fourier Encoding</div><div class="n-sub">frozen, D=256</div></div><div class="arch-arr">&rarr;</div>
+      <div class="arch-node core"><div class="n-title">Residual Blocks &times;3</div><div class="n-sub">H=256, dropout .1</div></div><div class="arch-arr">&rarr;</div>
+      <div class="arch-node"><div class="n-title">NIG Head</div><div class="n-sub">(γ, ν, α, β)</div></div>
+    </div>
+  </div>
+
+  <div class="method-text">
+    <p>Spatial coordinates are min-max normalized, then lifted by a fixed random Fourier feature map before entering the residual backbone &mdash; a Fourier Feature MLP chosen to counteract the spectral bias of standard MLPs, which tend to over-smooth high-frequency spatial structure. The model is optimized with the evidential loss $\mathcal{L}_{\text{EDL}} = \mathcal{L}_{\text{NLL}} + \lambda\mathcal{L}_{\text{reg}}$, where the regularizer penalizes high evidence on incorrect predictions.</p>
+    <h4>Continual, warm-started learning</h4>
+    <p>At each mission episode, FERN is fine-tuned from the previous episode's checkpoint rather than reinitialized, retaining previously learned field structure while a scaled-down learning rate and short linear warmup prevent loss spikes at episode boundaries. Because every episode trains on the <em>entire</em> cumulative dataset, the model continuously reconciles new evidence with prior structure as the mission advances.</p>
+  </div>
+
+  <h2 class="sec-title" style="margin-top:3rem">Information-Theoretic Trajectory Planning</h2>
+  <div class="method-text">
+    <p>After every model update, FERN's closed-form $\sigma_{\text{total}}$ map drives a two-stage active-sensing loop: importance-sampled waypoint selection, followed by minimum-length routing and kinodynamically feasible trajectory generation.</p>
+  </div>
+
+  <div class="eq-box">w<sub>i</sub> = σ<sub>total</sub>(x<sub>i</sub>) &nbsp;/&nbsp; Σ<sub>j</sub> σ<sub>total</sub>(x<sub>j</sub>)</div>
+  <div class="eq-note">Normalized importance weight over a uniform discretization of the domain &mdash; the square-root (std-dev) transform of the variance avoids over-concentrating samples at a single dominant peak.</div>
+
+  <div class="arch-box fade-in">
+    <div style="text-align:center;margin-bottom:1rem"><span class="sec-label" style="display:flex;justify-content:center">Planning Pipeline</span></div>
+    <div class="arch-flow">
+      <div class="arch-node core"><div class="n-title">σ<sub>total</sub> Map</div><div class="n-sub">closed-form</div></div><div class="arch-arr">&rarr;</div>
+      <div class="arch-node"><div class="n-title">Systematic Resampling</div><div class="n-sub">n<sub>b</sub> waypoints</div></div><div class="arch-arr">&rarr;</div>
+      <div class="arch-node"><div class="n-title">Coverage Merge</div><div class="n-sub">radius r<sub>cov</sub></div></div><div class="arch-arr">&rarr;</div>
+      <div class="arch-node core"><div class="n-title">LKH-3 TSP</div><div class="n-sub">open path π*</div></div><div class="arch-arr">&rarr;</div>
+      <div class="arch-node"><div class="n-title">Bézier Trajectory</div><div class="n-sub">kinodynamic</div></div>
+    </div>
+  </div>
+  <div class="method-text">
+    <p>Because the evidence parameter $\nu$ grows only where data has been collected, low importance weights in previously sampled regions steer the planner away from revisits &mdash; without any explicit occupancy bookkeeping. Systematic resampling then evenly spreads the sensing budget across multiple high-uncertainty zones rather than collapsing onto a single mode, and the resulting waypoints are ordered into a minimum-length open path with the LKH-3 TSP solver before being converted into a smooth, kinodynamically feasible flight trajectory.</p>
+  </div>
+</div></section><div class="divider"></div>
+
+<!-- RESULTS -->
+<section id="results"><div class="inner-w fade-in" style="padding:0 2rem">
+  <div class="sec-label">Evaluation</div><h2 class="sec-title">Benchmark Results</h2>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-val">72.6% &plusmn;22.5%</div><div class="stat-label">Avg. RMSE reduction vs. baselines</div></div>
+    <div class="stat"><div class="stat-val">8</div><div class="stat-label">Geospatial benchmark environments</div></div>
+    <div class="stat"><div class="stat-val">52.7%</div><div class="stat-label">Lower RMSE vs. POAM, fixed time budget</div></div>
+    <div class="stat"><div class="stat-val">35%</div><div class="stat-label">RMSE reduction, 3 physical AAV episodes</div></div>
+  </div>
+
+  <p style="font-size:.92rem;color:var(--text-sec);line-height:1.75;margin-bottom:1rem">FERN is benchmarked against POAM, SSGP, and OVC across eight SRTM-derived digital elevation environments (Env1&ndash;Env8), each spanning a 31&times;31&nbsp;m workspace with diverse terrain structure &mdash; from smooth basins with localized relief to ridge-dominated and high-frequency terrain.</p>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('bench')">Full Benchmark</button>
+    <button class="tab-btn" onclick="switchTab('ablation')">Time-Budget Ablation</button>
+  </div>
+
+  <div class="tab-content active" id="tab-bench">
+    <div class="data-table-wrap">
+      <table class="data-table">
+        <caption><strong>Table.</strong> Benchmark comparison of FERN, POAM, SSGP, and OVC across eight geospatial environments. Mean &plusmn; std over 10 seeds, final episode of a 20-episode run. RMSE in metres, SMSE unitless, MSLL in nats. Lower is better for all metrics; best per environment/metric in <strong>bold</strong>.</caption>
+        <thead><tr><th>Env</th><th colspan="3">FERN</th><th colspan="3">POAM</th><th colspan="3">SSGP</th><th colspan="3">OVC</th></tr>
+        <tr><th></th><th>RMSE</th><th>SMSE</th><th>MSLL</th><th>RMSE</th><th>SMSE</th><th>MSLL</th><th>RMSE</th><th>SMSE</th><th>MSLL</th><th>RMSE</th><th>SMSE</th><th>MSLL</th></tr></thead>
+        <tbody>
+        <tr><td>Env1</td><td class="best">6.217&plusmn;0.66</td><td class="best">0.0093</td><td class="best">&minus;2.408</td><td>13.460&plusmn;0.26</td><td>0.043</td><td>&minus;1.597</td><td>184.9&plusmn;63.0</td><td>9.016</td><td>6.333</td><td>16.740&plusmn;0.53</td><td>0.067</td><td>&minus;1.352</td></tr>
+        <tr><td>Env2</td><td class="best">4.352&plusmn;0.40</td><td class="best">0.0091</td><td class="best">&minus;2.293</td><td>7.999&plusmn;0.23</td><td>0.031</td><td>&minus;1.783</td><td>83.20&plusmn;20.99</td><td>3.501</td><td>8.488</td><td>9.968&plusmn;0.74</td><td>0.048</td><td>&minus;1.512</td></tr>
+        <tr><td>Env3</td><td class="best">2.592&plusmn;0.29</td><td class="best">0.0035</td><td class="best">&minus;2.659</td><td>5.709&plusmn;0.24</td><td>0.017</td><td>&minus;2.075</td><td>134.9&plusmn;55.3</td><td>10.740</td><td>22.870</td><td>9.581&plusmn;1.74</td><td>0.049</td><td>&minus;1.536</td></tr>
+        <tr><td>Env4</td><td class="best">1.918&plusmn;0.25</td><td class="best">0.0014</td><td class="best">&minus;2.852</td><td>3.999&plusmn;0.42</td><td>0.006</td><td>&minus;2.597</td><td>224.1&plusmn;54.1</td><td>20.110</td><td>34.250</td><td>9.499&plusmn;1.38</td><td>0.035</td><td>&minus;1.711</td></tr>
+        <tr><td>Env5</td><td class="best">2.047&plusmn;0.18</td><td class="best">0.0016</td><td class="best">&minus;2.900</td><td>4.066&plusmn;0.18</td><td>0.006</td><td>&minus;2.593</td><td>163.6&plusmn;65.6</td><td>11.220</td><td>25.650</td><td>6.191&plusmn;0.26</td><td>0.014</td><td>&minus;2.127</td></tr>
+        <tr><td>Env6</td><td class="best">5.853&plusmn;0.53</td><td class="best">0.0300</td><td class="best">&minus;1.707</td><td>13.840&plusmn;0.30</td><td>0.167</td><td>&minus;0.926</td><td>218.0&plusmn;86.5</td><td>47.200</td><td>5.244</td><td>16.850&plusmn;0.34</td><td>0.247</td><td>&minus;0.697</td></tr>
+        <tr><td>Env7</td><td class="best">4.478&plusmn;0.53</td><td class="best">0.0074</td><td class="best">&minus;2.444</td><td>10.240&plusmn;0.33</td><td>0.038</td><td>&minus;1.678</td><td>253.7&plusmn;168.9</td><td>32.370</td><td>8.224</td><td>14.800&plusmn;0.53</td><td>0.080</td><td>&minus;1.269</td></tr>
+        <tr><td>Env8</td><td class="best">7.311&plusmn;0.61</td><td class="best">0.0161</td><td class="best">&minus;2.129</td><td>16.970&plusmn;0.49</td><td>0.086</td><td>&minus;1.245</td><td>154.6&plusmn;60.0</td><td>8.126</td><td>2.579</td><td>20.540&plusmn;0.52</td><td>0.126</td><td>&minus;1.034</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="tab-content" id="tab-ablation">
+    <div class="data-table-wrap">
+      <table class="data-table">
+        <caption><strong>Table.</strong> FERN vs. POAM under a shared 3,600-second navigation time budget (mean &plusmn; std, 10 seeds). Traj. Length is total distance flown (m) to exhaust the budget. FERN wins RMSE in every environment; POAM's wider, more conservative GP intervals give it a modest MSLL edge in most environments.</caption>
+        <thead><tr><th>Env</th><th colspan="3">FERN</th><th colspan="3">POAM</th></tr>
+        <tr><th></th><th>RMSE</th><th>MSLL</th><th>Traj. Length</th><th>RMSE</th><th>MSLL</th><th>Traj. Length</th></tr></thead>
+        <tbody>
+        <tr><td>Env1</td><td class="best">7.30&plusmn;1.62</td><td>&minus;1.55</td><td>3392.2&plusmn;4.0</td><td>14.55&plusmn;0.29</td><td class="best">&minus;1.87</td><td class="best">3343.9&plusmn;13.0</td></tr>
+        <tr><td>Env2</td><td class="best">5.20&plusmn;0.41</td><td>&minus;1.55</td><td>3392.7&plusmn;1.8</td><td>8.65&plusmn;0.17</td><td class="best">&minus;1.75</td><td class="best">3352.6&plusmn;21.6</td></tr>
+        <tr><td>Env3</td><td class="best">3.38&plusmn;0.64</td><td>&minus;1.94</td><td>3392.2&plusmn;2.9</td><td>7.71&plusmn;0.50</td><td class="best">&minus;1.95</td><td class="best">3386.7&plusmn;22.7</td></tr>
+        <tr><td>Env4</td><td class="best">2.87&plusmn;0.65</td><td>&minus;2.24</td><td>3393.8&plusmn;3.3</td><td>5.49&plusmn;0.18</td><td class="best">&minus;2.35</td><td class="best">3377.5&plusmn;14.6</td></tr>
+        <tr><td>Env5</td><td class="best">2.82&plusmn;0.09</td><td>&minus;2.18</td><td class="best">3392.7&plusmn;2.9</td><td>5.55&plusmn;0.29</td><td class="best">&minus;2.38</td><td>3420.6&plusmn;14.0</td></tr>
+        <tr><td>Env6</td><td class="best">5.45&plusmn;0.58</td><td>&minus;0.55</td><td>3391.8&plusmn;3.6</td><td>14.59&plusmn;0.25</td><td class="best">&minus;0.89</td><td class="best">3387.3&plusmn;13.2</td></tr>
+        <tr><td>Env7</td><td class="best">6.05&plusmn;1.06</td><td>&minus;1.44</td><td>3390.5&plusmn;3.3</td><td>12.82&plusmn;0.30</td><td class="best">&minus;1.75</td><td class="best">3363.1&plusmn;10.0</td></tr>
+        <tr><td>Env8</td><td class="best">7.04&plusmn;1.60</td><td>&minus;0.93</td><td>3393.4&plusmn;2.2</td><td>19.38&plusmn;0.59</td><td class="best">&minus;1.43</td><td class="best">3329.2&plusmn;17.3</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="fig-wrap fade-in">
+    <img src="./static/images/comparison_grid.jpg" alt="Qualitative comparison of FERN and POAM predictions and uncertainty maps">
+    <div class="fig-caption"><strong>Qualitative comparison.</strong> FERN vs. POAM across Env1, Env3, Env5, and Env7. FERN's predicted surfaces preserve fine-grained ridges and valleys that POAM's predictions smooth out, and FERN's uncertainty map tracks local prediction difficulty across the domain &mdash; while POAM's uncertainty stays low almost everywhere despite larger errors, indicating overconfidence rather than genuine calibration.</div>
+  </div>
+
+  <div class="fig-wrap fade-in">
+    <img src="./static/images/rmses_per_env_samples.jpg" alt="RMSE convergence vs cumulative samples across four environments">
+    <div class="fig-caption"><strong>Convergence.</strong> RMSE vs. cumulative samples for Env1, Env6, Env7, and Env8. POAM and OVC reduce error faster at first, but once enough samples accumulate, the total-uncertainty FERN variant overtakes both and reaches a lower error floor; the epistemic-only variant starts slower but converges to a similar final error as the aleatoric/epistemic decomposition stabilizes past ~7,000 samples.</div>
+  </div>
+</div></section><div class="divider"></div>
+
+<!-- VIDEOS -->
+<section id="videos" class="vid-section"><div class="inner-w fade-in" style="padding:0 2rem">
+  <div class="sec-label">Demonstrations</div><h2 class="sec-title">Videos</h2>
+
+  <h3 style="font-size:.95rem;font-weight:600;margin-top:1rem">Digital Elevation Mapping Simulations</h3>
+  <p style="font-size:.85rem;color:var(--text-mut);margin:.3rem 0 0">Real-time active-sensing missions over all eight SRTM benchmark environments &mdash; uncertainty-guided waypoint selection, TSP routing, and continual model refinement, episode by episode.</p>
+  <div class="vid-grid">
+
+    <div class="vid-mini">
+      <div class="vid-player"><video controls preload="none" poster="./static/images/posters/sim_n17e073.jpg"><source src="./static/videos/sim_n17e073.mp4" type="video/mp4">Your browser does not support the video tag.</video></div>
+      <div class="vid-info"><div><h3>Env1 &middot; n17e073</h3><p>Smooth basin with localized high relief</p></div><span class="vid-tag vid-tag-sim">Simulation</span></div>
+    </div>
+    <div class="vid-mini">
+      <div class="vid-player"><video controls preload="none" poster="./static/images/posters/sim_n18e045.jpg"><source src="./static/videos/sim_n18e045.mp4" type="video/mp4">Your browser does not support the video tag.</video></div>
+      <div class="vid-info"><div><h3>Env2 &middot; n18e045</h3><p>Ridge-dominated terrain</p></div><span class="vid-tag vid-tag-sim">Simulation</span></div>
+    </div>
+    <div class="vid-mini">
+      <div class="vid-player"><video controls preload="none" poster="./static/images/posters/sim_n35w107.jpg"><source src="./static/videos/sim_n35w107.mp4" type="video/mp4">Your browser does not support the video tag.</video></div>
+      <div class="vid-info"><div><h3>Env3 &middot; n35w107</h3><p>Smooth basin with localized high relief</p></div><span class="vid-tag vid-tag-sim">Simulation</span></div>
+    </div>
+    <div class="vid-mini">
+      <div class="vid-player"><video controls preload="none" poster="./static/images/posters/sim_n42e054.jpg"><source src="./static/videos/sim_n42e054.mp4" type="video/mp4">Your browser does not support the video tag.</video></div>
+      <div class="vid-info"><div><h3>Env4 &middot; n42e054</h3><p>Sharp flat-basin to steep-terrain transitions</p></div><span class="vid-tag vid-tag-sim">Simulation</span></div>
+    </div>
+    <div class="vid-mini">
+      <div class="vid-player"><video controls preload="none" poster="./static/images/posters/sim_n43w080.jpg"><source src="./static/videos/sim_n43w080.mp4" type="video/mp4">Your browser does not support the video tag.</video></div>
+      <div class="vid-info"><div><h3>Env5 &middot; n43w080</h3><p>Sharp flat-basin to steep-terrain transitions</p></div><span class="vid-tag vid-tag-sim">Simulation</span></div>
+    </div>
+    <div class="vid-mini">
+      <div class="vid-player"><video controls preload="none" poster="./static/images/posters/sim_n44w111.jpg"><source src="./static/videos/sim_n44w111.mp4" type="video/mp4">Your browser does not support the video tag.</video></div>
+      <div class="vid-info"><div><h3>Env6 &middot; n44w111</h3><p>Enclosed, valley-like regions</p></div><span class="vid-tag vid-tag-sim">Simulation</span></div>
+    </div>
+    <div class="vid-mini">
+      <div class="vid-player"><video controls preload="none" poster="./static/images/posters/sim_n45w123.jpg"><source src="./static/videos/sim_n45w123.mp4" type="video/mp4">Your browser does not support the video tag.</video></div>
+      <div class="vid-info"><div><h3>Env7 &middot; n45w123</h3><p>Smooth basin with localized high relief</p></div><span class="vid-tag vid-tag-sim">Simulation</span></div>
+    </div>
+    <div class="vid-mini">
+      <div class="vid-player"><video controls preload="none" poster="./static/images/posters/sim_n47w124.jpg"><source src="./static/videos/sim_n47w124.mp4" type="video/mp4">Your browser does not support the video tag.</video></div>
+      <div class="vid-info"><div><h3>Env8 &middot; n47w124</h3><p>Dense, high-frequency surface variation</p></div><span class="vid-tag vid-tag-sim">Simulation</span></div>
+    </div>
+
+  </div>
+
+  <h3 style="font-size:.95rem;font-weight:600;margin-top:2.5rem">Marshland Deployment</h3>
+  <div class="vid-stack">
+
+    <div class="vid-card">
+      <div class="vid-placeholder"><i class="fas fa-video"></i><span>Video coming soon</span></div>
+      <div class="vid-info"><div><h3>Pre-Deployment Marsh Simulation</h3><p>Active-sensing simulation over the USGS 3DEP coastal marshland raster, run before the physical flight to validate the waypoint mission &mdash; will be added here.</p></div><span class="vid-tag vid-tag-soon">Coming Soon</span></div>
+    </div>
+
+    <div class="vid-card">
+      <div class="vid-player">
+        <video controls preload="none" poster="./static/images/posters/physical_experiment.jpg">
+          <source src="./static/videos/physical_experiment.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <div class="vid-info"><div><h3>Physical AAV Marshland Experiment</h3><p>DJI Mavic Air flying the TSP-ordered, FERN-guided waypoint mission over the coastal marshland site</p></div><span class="vid-tag vid-tag-real">Real-World</span></div>
+    </div>
+
+  </div>
+</div></section><div class="divider"></div>
+
+<!-- EXPERIMENTS -->
+<section id="experiments"><div class="inner fade-in">
+  <div class="sec-label">Real-World</div><h2 class="sec-title">Marsh Health Monitoring Experiment</h2>
+  <p style="font-size:.92rem;color:var(--text-sec);line-height:1.75;margin-bottom:.5rem">FERN's full active-sensing pipeline was deployed on an AAV over a 157&times;130&nbsp;m coastal marshland site, using USGS 3DEP 1&nbsp;m LiDAR as the baseline elevation reference. Battery life limited the flight to three episodes of 30 importance-sampled waypoints each, ordered into a 107-waypoint GPS mission at 35.2&nbsp;m AGL with the LKH-3 TSP solver and flown autonomously by a DJI Mavic Air.</p>
+
+  <div class="fig-wrap fade-in">
+    <img src="./static/images/fern_physical.jpg" alt="Physical AAV marshland experiment: flight, trajectory overlay, and onboard imagery">
+    <div class="fig-caption"><strong>Physical deployment.</strong> Left: the AAV (red circle) surveying the marshland. Top right: its executed trajectory (green) overlaid on satellite imagery, confirming accurate tracking of the planned mission. Bottom right: onboard imagery capturing marsh vegetation in detail &mdash; the planner concentrated waypoints near trench areas where marsh growth is most prominent. Evaluated against the LiDAR reference, RMSE fell from 0.200&nbsp;m (episode 1) to 0.141&nbsp;m (episode 2) to 0.129&nbsp;m (episode 3), a cumulative 35% reduction.</div>
+  </div>
+
+  <div class="fig-wrap fade-in">
+    <img src="./static/images/sim_exp_udep_f.jpg" alt="Marsh health simulation over the USGS 3DEP marshland site">
+    <div class="fig-caption"><strong>Site simulation, final episode.</strong> Left: ground-truth marsh terrain with the drone trajectory overlaid &mdash; red is the flown path accumulated since the pilot survey, cyan is the current episode's planned path. Top right: FERN's predicted terrain. Bottom right: total predictive uncertainty $\sigma_{\text{total}}$. Across the 10-episode mission, RMSE fell from 0.213&nbsp;m to 0.062&nbsp;m as the training set grew from 160 pilot measurements to 2,561.</div>
+  </div>
+
+  <h3 style="font-size:.95rem;font-weight:600;margin-top:2.5rem;margin-bottom:.3rem">Elevation Mapping Benchmark Environments</h3>
+  <p style="font-size:.85rem;color:var(--text-mut);margin-bottom:.5rem">Eight SRTM-derived digital elevation tiles used for the simulation benchmark above.</p>
+  <div class="env-grid">
+    <div class="env-card"><img src="./static/images/env/n17e073.jpg" alt="Env1 n17e073"><div class="env-label"><b>Env1</b><span>n17e073</span></div></div>
+    <div class="env-card"><img src="./static/images/env/n18e045.jpg" alt="Env2 n18e045"><div class="env-label"><b>Env2</b><span>n18e045</span></div></div>
+    <div class="env-card"><img src="./static/images/env/n35w107.jpg" alt="Env3 n35w107"><div class="env-label"><b>Env3</b><span>n35w107</span></div></div>
+    <div class="env-card"><img src="./static/images/env/n42e054.jpg" alt="Env4 n42e054"><div class="env-label"><b>Env4</b><span>n42e054</span></div></div>
+    <div class="env-card"><img src="./static/images/env/n43w080.jpg" alt="Env5 n43w080"><div class="env-label"><b>Env5</b><span>n43w080</span></div></div>
+    <div class="env-card"><img src="./static/images/env/n44w111.jpg" alt="Env6 n44w111"><div class="env-label"><b>Env6</b><span>n44w111</span></div></div>
+    <div class="env-card"><img src="./static/images/env/n45w123.jpg" alt="Env7 n45w123"><div class="env-label"><b>Env7</b><span>n45w123</span></div></div>
+    <div class="env-card"><img src="./static/images/env/n47w124.jpg" alt="Env8 n47w124"><div class="env-label"><b>Env8</b><span>n47w124</span></div></div>
+  </div>
+</div></section><div class="divider"></div>
+
+<!-- BIBTEX -->
+<section id="bibtex"><div class="inner fade-in">
+  <div class="sec-label">Citation</div><h2 class="sec-title">BibTeX</h2>
+  <div class="bib-block"><div class="bib-head"><span>fern2026.bib</span><button class="copy-btn" onclick="copyBib()"><i class="fas fa-copy"></i> Copy</button></div><div class="bib-code" id="bib-code">@article{raxit2026fern,
+  author  = {Raxit, Sourav and Newaz, Abdullah Al Redwan and
+             Padrao, Paulo and Fuentes, Jose and Bobadilla, Leonardo},
+  title   = {{FERN}: Fourier Evidential Regression Network for
+             Robotic Information Gathering},
+  year    = {2026},
+  note    = {Preprint},
+}</div></div>
+</div></section>
+
+<footer>
+  <p>
+    <b style="color:var(--text)">FERN</b> &middot; University of New Orleans &amp; Florida International University
+  </p>
+</footer>
+<script>
+function switchTab(t){document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));event.target.classList.add('active');document.getElementById('tab-'+t).classList.add('active')}
+function copyBib(){navigator.clipboard.writeText(document.getElementById('bib-code').textContent).then(()=>{const b=document.querySelector('.copy-btn');b.innerHTML='<i class="fas fa-check"></i> Copied!';setTimeout(()=>b.innerHTML='<i class="fas fa-copy"></i> Copy',2000)})}
+const obs=new IntersectionObserver(e=>{e.forEach(en=>{if(en.isIntersecting)en.target.classList.add('visible')})},{threshold:0.1});document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
